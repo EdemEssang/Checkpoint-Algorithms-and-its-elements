@@ -1,0 +1,66 @@
+ALGORITHM AnalyzeSentence
+
+  // --- 1. Variable Initialization ---
+  // Counter for the total number of characters in the sentence (excluding the final period).
+  DECLARE sentence_length AS INTEGER = 0
+
+  // Counter for the number of words. Initialized to 0, will be adjusted after the loop.
+  // Assumes words are separated by a single space.
+  DECLARE word_count AS INTEGER = 0
+
+  // Counter for the total number of vowels (a, e, i, o, u, case-insensitive).
+  DECLARE vowel_count AS INTEGER = 0
+
+  // Variable to hold the character read in each iteration.
+  DECLARE current_char AS CHARACTER
+
+  // Define the set of vowels for easy comparison (case-insensitive).
+  DECLARE VOWELS_LOWERCASE AS ARRAY OF CHARACTER = ['a', 'e', 'i', 'o', 'u']
+
+  // --- 2. Character-by-Character Processing Loop ---
+  // The loop continues indefinitely until a specific break condition is met.
+  LOOP
+
+    // Read a single character from the input stream.
+    READ current_char
+
+    // Check if the current character is the sentence-ending period.
+    IF current_char IS EQUAL TO '.' THEN
+      BREAK // Exit the loop if the period is found, as the sentence has ended.
+    END IF
+
+    // If it's not the period, it's part of the sentence, so increment the length.
+    sentence_length = sentence_length + 1
+
+    // Check if the current character is a space to count words.
+    // Based on "words are separated by a single space," each space indicates the end of a word.
+    IF current_char IS EQUAL TO ' ' THEN
+      word_count = word_count + 1
+    END IF
+
+    // Convert the current character to lowercase for case-insensitive vowel checking.
+    DECLARE lower_char AS CHARACTER = TO_LOWER(current_char)
+
+    // Check if the lowercase character is one of the defined vowels.
+    IF lower_char IS IN VOWELS_LOWERCASE THEN
+      vowel_count = vowel_count + 1
+    END IF
+
+  END LOOP // End of character processing loop
+
+  // --- 3. Final Adjustments and Output ---
+  // Adjust word count: If the sentence has any characters (i.e., it's not just a period),
+  // there's always one more word than the number of spaces between words.
+  // This handles sentences with one or more words correctly.
+  IF sentence_length > 0 THEN
+    word_count = word_count + 1
+  END IF
+
+  // Display the determined results.
+
+  WRITE "Length of the sentence (excluding the final period): " + sentence_length + " characters"
+  WRITE "Number of words in the sentence: " + word_count + " words"
+  WRITE "Number of vowels in the sentence: " + vowel_count + " vowels"
+  
+
+END ALGORITHM
